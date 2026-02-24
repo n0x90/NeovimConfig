@@ -64,13 +64,9 @@ return {
   config = function(_, opts)
     local cmp = require("cmp")
     local npairs = require("nvim-autopairs")
-    local Rule = require("nvim-autopairs.rule")
 
     require("luasnip.loaders.from_vscode").lazy_load()
     npairs.setup({})
-    npairs.add_rules({
-      Rule("<", ">", { "html", "javascriptreact", "typescriptreact" }),
-    })
     cmp.setup(opts)
 
     cmp.setup.cmdline({ "/", "?" }, {

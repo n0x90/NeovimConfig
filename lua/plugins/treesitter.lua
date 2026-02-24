@@ -2,14 +2,11 @@ return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
   lazy = false,
-  dependencies = {
-    "windwp/nvim-ts-autotag",
-  },
 
   opts = {
     highlight = { enable = true },
     indent = { enable = true },
-    autotag = { enable = true },
+    auto_install = true,
     ensure_installed = {
       "lua",
       "python",

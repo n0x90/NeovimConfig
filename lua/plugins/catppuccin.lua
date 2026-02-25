@@ -9,7 +9,7 @@
   local result = handle:read("*a") or ""
   handle:close()
 
-  return result:match("[Dd]ark") and "mocha" or "latte"
+  return result:match("[Dd]ark") and "mocha" or "frappe"
 end
 
 return {

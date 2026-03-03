@@ -1,6 +1,6 @@
-local function get_kde_appearance()
+local function get_gnome_appearance()
   local handle = io.popen(
-    "sh -c 'kreadconfig6 --file kdeglobals --group General --key ColorScheme 2>/dev/null || kreadconfig5 --file kdeglobals --group General --key ColorScheme 2>/dev/null'"
+    "sh -c 'gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null || gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null'"
   )
   if not handle then
     return "latte"
@@ -30,7 +30,7 @@ local function get_system_background()
     return get_macos_appearance()
   end
   if uname == "Linux" then
-    return get_kde_appearance()
+    return get_gnome_appearance()
   end
   return "mocha"
 end

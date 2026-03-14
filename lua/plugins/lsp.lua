@@ -41,13 +41,17 @@ return {
     },
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      local use_native = true
 
       local servers = {
         pyright = {},
         ruff = {},
         rust_analyzer = {},
-        clangd = {},
+        clangd = {
+          cmd = {
+            "clangd",
+            "--fallback-style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, UseTab: Never}",
+          },
+        },
         html = {},
         cssls = {},
         tailwindcss = {},

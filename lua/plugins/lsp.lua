@@ -42,6 +42,13 @@ return {
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+      vim.lsp.config("clangd", {
+        cmd = {
+          "clangd",
+          "--fallback-style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, UseTab: Never}",
+        },
+      })
+
       local servers = {
         pyright = {},
         ruff = {},

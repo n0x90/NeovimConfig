@@ -7,7 +7,6 @@ return {
     { "<leader>tb", desc = "Terminal (bottom)" },
   },
   opts = {
-    direction = "float",
     start_in_insert = true,
     close_on_exit = true,
     shade_terminals = true,
@@ -31,8 +30,12 @@ return {
       hidden = true,
     })
 
-    vim.keymap.set("n", "<leader>tt", function() float:toggle() end, { desc = "Terminal (float)" })
-    vim.keymap.set("n", "<leader>tb", function() bottom:toggle() end, { desc = "Terminal (bottom)" })
+    vim.keymap.set("n", "<leader>tt", function()
+      float:toggle()
+    end, { desc = "Terminal (float)" })
 
+    vim.keymap.set("n", "<leader>tb", function()
+      bottom:toggle()
+    end, { desc = "Terminal (bottom)" })
   end,
 }

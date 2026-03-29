@@ -17,7 +17,6 @@ map("v", "K", ":m '<-2<cr>gv=gv", { silent = true })
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
--- TODO: Check if the following plays nice with other buf types
 map("n", "<leader>w", "<cmd>w<cr>")
 map("n", "<leader>q", "<cmd>q<cr>")
 map("n", "<leader>x", "<cmd>x<cr>")

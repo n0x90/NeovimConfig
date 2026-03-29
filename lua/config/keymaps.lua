@@ -2,8 +2,6 @@ local map = vim.keymap.set
 
 -- Navigate to normal mode
 map("i", "jj", "<Esc>")
-map("t", "jj", [[<C-\><C-n>]])
-map("t", "<Esc>", [[<C-\><C-n>]])
 
 -- Clear search
 map("n", "<Esc>", "<cmd>nohlsearch<cr>")
@@ -38,7 +36,6 @@ vim.keymap.set({ "t", "n" }, "<C-x>", function()
     vim.cmd("hide")
   end
 end, { desc = "Hide terminal" })
-
 
 -- Buffer managment
 vim.keymap.set("n", "<leader>bd", "<cmd>bd<cr>")

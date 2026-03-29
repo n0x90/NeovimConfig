@@ -18,6 +18,7 @@ require("lazy").setup({
   spec = {
     { import = "plugins" },
   },
+  lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json",
   install = { colorscheme = { "habamax" } },
   checker = { enabled = true },
 })

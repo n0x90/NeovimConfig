@@ -2,14 +2,6 @@ return {
   "stevearc/conform.nvim",
   event = { "BufWritePre" },
   opts = {
-    formatters = {
-      ruff_format = {
-        command = function(_)
-          local cwd = vim.fn.getcwd()
-          return cwd .. "/.venv/bin/ruff"
-        end,
-      },
-    },
     formatters_by_ft = {
       javascript = { "prettier" },
       typescript = { "prettier" },

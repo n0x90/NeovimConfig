@@ -56,6 +56,17 @@ return {
         cssls = {},
         tailwindcss = {},
         eslint = {},
+        emmet_language_server = {
+          filetypes = {
+            "css",
+            "html",
+            "javascriptreact",
+            "less",
+            "sass",
+            "scss",
+            "typescriptreact",
+          },
+        },
         ts_ls = {},
       }
 

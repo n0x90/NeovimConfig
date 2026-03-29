@@ -5,7 +5,7 @@ return {
 
   opts = {
     highlight = { enable = true },
-    indent = { enable = true },
+    indent = { enable = false },
     auto_install = true,
     ensure_installed = {
       "lua",
@@ -31,6 +31,10 @@ return {
     if not ok then
       return
     end
+
+    pcall(vim.treesitter.language.register, "tsx", "javascriptreact")
+    pcall(vim.treesitter.language.register, "tsx", "typescriptreact")
+
     configs.setup(opts)
   end,
 }

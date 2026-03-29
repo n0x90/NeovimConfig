@@ -13,6 +13,49 @@ return {
   opts = function()
     local cmp = require("cmp")
     local luasnip = require("luasnip")
+    local react = require("config.ft.react")
+
+    local function append_return_semicolon()
+      vim.schedule(function()
+        local row = vim.api.nvim_win_get_cursor(0)[1]
+        local close_line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
+
+        if close_line and close_line:match("^%s*%)$") then
+          vim.api.nvim_buf_set_lines(0, row, row + 1, false, { close_line .. ";" })
+        end
+      end)
+    end
+
+    local function cr(fallback)
+      if cmp.visible() and cmp.get_selected_entry() then
+        cmp.confirm({ select = false })
+        return
+      end
+
+      if cmp.visible() then
+        cmp.abort()
+      end
+
+      local keys
+      local add_semicolon = false
+      if vim.bo.filetype == "javascriptreact" or vim.bo.filetype == "typescriptreact" then
+        keys, add_semicolon = react.cr()
+      else
+        local ok, npairs = pcall(require, "nvim-autopairs")
+        if ok then
+          keys = npairs.autopairs_cr()
+        end
+      end
+
+      if keys then
+        vim.api.nvim_feedkeys(keys, "n", false)
+        if add_semicolon then
+          append_return_semicolon()
+        end
+      else
+        fallback()
+      end
+    end
 
     return {
       snippet = {
@@ -23,7 +66,7 @@ return {
 
       mapping = cmp.mapping.preset.insert({
         ["<C-Space>"] = cmp.mapping.complete(),
-        ["<CR>"] = cmp.mapping.confirm({ select = false }),
+        ["<CR>"] = cmp.mapping(cr, { "i", "s" }),
       }),
 
       sources = cmp.config.sources({

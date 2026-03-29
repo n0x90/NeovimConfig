@@ -28,7 +28,7 @@ return {
 
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "williamboman/mason-lspconfig.nvim",
@@ -56,6 +56,19 @@ return {
     end,
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local enabled_servers = {}
+
+      local function has_executable_cmd(config)
+        if type(config.cmd) == "function" then
+          return true
+        end
+
+        if type(config.cmd) == "table" and config.cmd[1] then
+          return vim.fn.executable(config.cmd[1]) == 1
+        end
+
+        return false
+      end
 
       local servers = {
         pyright = {},
@@ -98,9 +111,14 @@ return {
       for name, server in pairs(servers) do
         server.capabilities = capabilities
         vim.lsp.config(name, server)
+
+        if has_executable_cmd(vim.lsp.config[name]) then
+          table.insert(enabled_servers, name)
+        end
       end
 
-      vim.lsp.enable(vim.tbl_keys(servers))
+      table.sort(enabled_servers)
+      vim.lsp.enable(enabled_servers)
     end,
   },
 }

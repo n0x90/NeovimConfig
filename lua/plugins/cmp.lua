@@ -27,13 +27,9 @@ return {
     end
 
     local function cr(fallback)
-      if cmp.visible() and cmp.get_selected_entry() then
-        cmp.confirm({ select = false })
-        return
-      end
-
       if cmp.visible() then
-        cmp.abort()
+        cmp.confirm({ select = true })
+        return
       end
 
       local keys

@@ -10,6 +10,9 @@ return {
       vim.keymap.set("n", "<leader>hs", gs.stage_hunk, { buffer = bufnr })
       vim.keymap.set("n", "<leader>hr", gs.reset_hunk, { buffer = bufnr })
       vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr })
+      vim.keymap.set("n", "<leader>hH", function()
+        gs.show("HEAD")
+      end, { buffer = bufnr, desc = "Open file from git HEAD" })
     end,
   },
 }

@@ -12,7 +12,7 @@ local function ensure_mason_tools()
     "html-lsp",
     "prettier",
     "prettierd",
-    "pyright",
+    "basedpyright",
     "ruff",
     "rust-analyzer",
     "tailwindcss-language-server",
@@ -109,7 +109,7 @@ return {
     },
     opts = {
       ensure_installed = {
-        "pyright",
+        "basedpyright",
         "ruff",
         "rust_analyzer",
         "clangd",
@@ -181,6 +181,10 @@ return {
     end,
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      }
       local enabled_servers = {}
 
       local function has_executable_cmd(config)
@@ -196,7 +200,20 @@ return {
       end
 
       local servers = {
-        pyright = {},
+        basedpyright = {
+          settings = {
+            basedpyright = {
+              analysis = {
+                inlayHints = {
+                  callArgumentNames = true,
+                  functionReturnTypes = true,
+                  genericTypes = true,
+                  variableTypes = true,
+                },
+              },
+            },
+          },
+        },
         ruff = {
           init_options = {
             settings = {

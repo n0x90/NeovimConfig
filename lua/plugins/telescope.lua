@@ -12,6 +12,41 @@ return {
     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
     { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },
     { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
+    {
+      "<leader>fd",
+      function()
+        require("telescope.builtin").diagnostics({ bufnr = 0 })
+      end,
+      desc = "Buffer diagnostics",
+    },
+    {
+      "<leader>fD",
+      function()
+        require("telescope.builtin").diagnostics()
+      end,
+      desc = "Workspace diagnostics",
+    },
+    {
+      "<leader>fs",
+      function()
+        require("telescope.builtin").lsp_document_symbols()
+      end,
+      desc = "Document symbols",
+    },
+    {
+      "<leader>fS",
+      function()
+        require("telescope.builtin").lsp_dynamic_workspace_symbols()
+      end,
+      desc = "Workspace symbols",
+    },
+    {
+      "<leader>fR",
+      function()
+        require("telescope.builtin").lsp_references()
+      end,
+      desc = "References",
+    },
   },
   opts = {
     extensions = {

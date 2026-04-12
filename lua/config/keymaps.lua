@@ -100,7 +100,7 @@ map("v", ">", ">gv")
 map("n", "<leader>w", "<cmd>w<cr>")
 map("n", "<leader>q", "<cmd>q<cr>")
 map("n", "<leader>x", "<cmd>x<cr>")
-map("n", "<leader>e", "<cmd>e<cr>")
+map("n", "<leader>l", "<cmd>e<cr>")
 
 map("t", "<C-j>", [[<C-\><C-n><C-w>j]])
 map("t", "<C-h>", [[<C-\><C-n><C-w>h]])

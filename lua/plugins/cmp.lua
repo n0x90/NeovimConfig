@@ -5,6 +5,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
+    "f3fora/cmp-spell",
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
     "windwp/nvim-autopairs",
@@ -69,6 +70,7 @@ return {
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "path" },
+        { name = "spell" },
       }, {
         { name = "buffer" },
       }),

@@ -11,6 +11,8 @@ vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = "menu,menuone,noselect"
+vim.opt.spelllang = { "en_us" }
+vim.opt.spelloptions:append("camel")
 
 vim.opt.mouse = "a"
 vim.opt.ignorecase = true
@@ -27,7 +29,17 @@ vim.opt.cursorline = true
 vim.opt.confirm = true
 vim.opt.inccommand = "split"
 vim.opt.timeoutlen = 300
-vim.opt.foldcolumn = "1"
+vim.opt.foldcolumn = "0"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
+
+local spell_group = vim.api.nvim_create_augroup("user_spell", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = spell_group,
+  pattern = { "gitcommit", "markdown", "text", "plaintex", "typst" },
+  callback = function()
+    vim.opt_local.spell = true
+  end,
+})

@@ -75,6 +75,11 @@ local function toggle_inlay_hints()
   vim.notify("Inlay hints " .. (enabled and "disabled" or "enabled"), vim.log.levels.INFO)
 end
 
+local function toggle_spell()
+  vim.wo.spell = not vim.wo.spell
+  vim.notify("Spell checking " .. (vim.wo.spell and "enabled" or "disabled"), vim.log.levels.INFO)
+end
+
 map("i", "jj", "<Esc>")
 map("t", "jj", [[<C-\><C-n>]])
 
@@ -116,3 +121,4 @@ map("n", "<leader>bp", "<cmd>bprevious<cr>")
 map("n", "<leader>tf", toggle_buffer_autoformat, { desc = "Toggle buffer format on save" })
 map("n", "<leader>tF", toggle_global_autoformat, { desc = "Toggle global format on save" })
 map("n", "<leader>th", toggle_inlay_hints, { desc = "Toggle inlay hints" })
+map("n", "<leader>ts", toggle_spell, { desc = "Toggle spell checking" })

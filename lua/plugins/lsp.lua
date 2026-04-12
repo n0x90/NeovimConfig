@@ -122,6 +122,7 @@ return {
       },
       automatic_enable = {
         exclude = {
+          "pyright",
           "ts_ls",
         },
       },

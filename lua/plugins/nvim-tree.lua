@@ -73,7 +73,7 @@ return {
         highlight_git = "name",
         highlight_opened_files = "name",
         indent_markers = {
-          enable = true,
+          enable = false,
         },
       },
       actions = {

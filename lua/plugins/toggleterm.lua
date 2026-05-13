@@ -20,14 +20,17 @@ return {
     local Terminal = require("toggleterm.terminal").Terminal
     local terminals = {}
 
-    local function current_dir()
-      local name = vim.api.nvim_buf_get_name(0)
+    local function valid_dir(dir)
+      return dir and vim.fn.isdirectory(dir) == 1
+    end
 
-      if name ~= "" then
-        return vim.fs.dirname(name)
+    local function terminal_dir()
+      local cwd = vim.fn.getcwd()
+      if valid_dir(cwd) then
+        return cwd
       end
 
-      return vim.fn.getcwd()
+      return vim.env.HOME or "."
     end
 
     local function find_venv_dir(start_dir)
@@ -65,7 +68,7 @@ return {
     end
 
     local function get_terminal(direction)
-      local dir = current_dir()
+      local dir = terminal_dir()
       local venv = find_venv_dir(dir)
       local key = terminal_key(direction, dir, venv)
 

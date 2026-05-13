@@ -13,8 +13,26 @@ return {
 
   opts = function()
     local cmp = require("cmp")
+    local context = require("cmp.config.context")
     local luasnip = require("luasnip")
     local react = require("config.ft.react")
+
+    local prose_filetypes = {
+      gitcommit = true,
+      markdown = true,
+      plaintex = true,
+      text = true,
+      typst = true,
+    }
+
+    local function spell_completion_enabled()
+      if prose_filetypes[vim.bo.filetype] then
+        return true
+      end
+
+      local ok, in_spell_capture = pcall(context.in_treesitter_capture, "spell")
+      return ok and in_spell_capture
+    end
 
     local function append_return_semicolon()
       vim.schedule(function()
@@ -70,7 +88,12 @@ return {
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "path" },
-        { name = "spell" },
+        {
+          name = "spell",
+          option = {
+            enable_in_context = spell_completion_enabled,
+          },
+        },
       }, {
         { name = "buffer" },
       }),

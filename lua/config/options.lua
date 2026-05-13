@@ -38,7 +38,26 @@ local spell_group = vim.api.nvim_create_augroup("user_spell", { clear = true })
 
 vim.api.nvim_create_autocmd("FileType", {
   group = spell_group,
-  pattern = { "gitcommit", "markdown", "text", "plaintex", "typst" },
+  pattern = {
+    "c",
+    "cpp",
+    "css",
+    "gitcommit",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "lua",
+    "markdown",
+    "plaintex",
+    "python",
+    "rust",
+    "text",
+    "typescript",
+    "typescriptreact",
+    "typst",
+    "yaml",
+  },
   callback = function()
     vim.opt_local.spell = true
   end,

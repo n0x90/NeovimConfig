@@ -143,6 +143,7 @@ return {
         group = group,
         callback = function(args)
           local client = vim.lsp.get_client_by_id(args.data.client_id)
+
           local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, {
               buffer = args.buf,
@@ -167,12 +168,15 @@ return {
             map("gD", function()
               ts_go_to_source_definition(args.buf)
             end, "Go to source definition")
+
             map("<leader>co", function()
               ts_organize_imports(args.buf)
             end, "Organize imports")
+
             map("<leader>cu", function()
               ts_source_action("source.removeUnusedImports.ts")
             end, "Remove unused imports")
+
             map("<leader>cM", function()
               ts_source_action("source.addMissingImports.ts")
             end, "Add missing imports")
@@ -180,12 +184,15 @@ return {
         end,
       })
     end,
+
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
         lineFoldingOnly = true,
       }
+
       local enabled_servers = {}
 
       local function has_executable_cmd(config)
@@ -205,16 +212,28 @@ return {
           settings = {
             basedpyright = {
               analysis = {
+                typeCheckingMode = "standard",
+                diagnosticMode = "openFilesOnly",
+
                 inlayHints = {
                   callArgumentNames = true,
                   functionReturnTypes = true,
                   genericTypes = true,
                   variableTypes = true,
                 },
+
+                reportAny = false,
+                reportUnknownArgumentType = false,
+                reportUnknownLambdaType = false,
+                reportUnknownMemberType = false,
+                reportUnknownParameterType = false,
+                reportUnknownVariableType = false,
+                reportMissingTypeStubs = false,
               },
             },
           },
         },
+
         ruff = {
           init_options = {
             settings = {
@@ -222,26 +241,34 @@ return {
             },
           },
         },
+
         rust_analyzer = {
           settings = {
             ["rust-analyzer"] = {
-              cargo = { allFeatures = true },
+              cargo = {
+                allFeatures = true,
+              },
               checkOnSave = {
                 command = "clippy",
               },
             },
           },
         },
+
         clangd = {},
         html = {},
         cssls = {},
         tailwindcss = {},
+
         eslint = {
           settings = {
-            workingDirectory = { mode = "auto" },
+            workingDirectory = {
+              mode = "auto",
+            },
             format = false,
           },
         },
+
         emmet_language_server = {
           filetypes = {
             "css",
@@ -253,30 +280,57 @@ return {
             "typescriptreact",
           },
         },
+
         vtsls = {
           settings = {
             vtsls = {
               autoUseWorkspaceTsdk = true,
             },
+
             javascript = {
               preferGoToSourceDefinition = true,
-              updateImportsOnFileMove = { enabled = "always" },
+              updateImportsOnFileMove = {
+                enabled = "always",
+              },
+
               inlayHints = {
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = "literals" },
-                parameterTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
+                functionLikeReturnTypes = {
+                  enabled = true,
+                },
+                parameterNames = {
+                  enabled = "literals",
+                },
+                parameterTypes = {
+                  enabled = true,
+                },
+                propertyDeclarationTypes = {
+                  enabled = true,
+                },
               },
             },
+
             typescript = {
               preferGoToSourceDefinition = true,
-              updateImportsOnFileMove = { enabled = "always" },
+              updateImportsOnFileMove = {
+                enabled = "always",
+              },
+
               inlayHints = {
-                enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = "literals" },
-                parameterTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
+                enumMemberValues = {
+                  enabled = true,
+                },
+                functionLikeReturnTypes = {
+                  enabled = true,
+                },
+                parameterNames = {
+                  enabled = "literals",
+                },
+                parameterTypes = {
+                  enabled = true,
+                },
+                propertyDeclarationTypes = {
+                  enabled = true,
+                },
               },
             },
           },
@@ -285,6 +339,7 @@ return {
 
       vim.diagnostic.config({
         severity_sort = true,
+
         float = {
           border = "rounded",
         },
@@ -292,6 +347,7 @@ return {
 
       for name, server in pairs(servers) do
         server.capabilities = capabilities
+
         vim.lsp.config(name, server)
 
         if has_executable_cmd(vim.lsp.config[name]) then
@@ -300,6 +356,7 @@ return {
       end
 
       table.sort(enabled_servers)
+
       vim.lsp.enable(enabled_servers)
     end,
   },

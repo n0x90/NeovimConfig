@@ -146,7 +146,7 @@ return {
 
           local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, {
-              buffer = args.buf,
+              buf = args.buf,
               desc = desc,
             })
           end
@@ -157,8 +157,12 @@ return {
           map("<leader>ca", vim.lsp.buf.code_action, "Code action")
           map("<leader>rn", vim.lsp.buf.rename, "Rename")
           map("<leader>cd", vim.diagnostic.open_float, "Line diagnostics")
-          map("[d", vim.diagnostic.goto_prev, "Previous diagnostic")
-          map("]d", vim.diagnostic.goto_next, "Next diagnostic")
+          map("[d", function()
+            vim.diagnostic.jump({ count = -1 })
+          end, "Previous diagnostic")
+          map("]d", function()
+            vim.diagnostic.jump({ count = 1 })
+          end, "Next diagnostic")
 
           if client and client:supports_method("textDocument/inlayHint") then
             pcall(vim.lsp.inlay_hint.enable, true, { bufnr = args.buf })
@@ -339,6 +343,20 @@ return {
 
       vim.diagnostic.config({
         severity_sort = true,
+        jump = {
+          on_jump = function(diagnostic, bufnr)
+            if not diagnostic then
+              return
+            end
+
+            vim.diagnostic.open_float({
+              bufnr = bufnr,
+              border = "rounded",
+              focus = false,
+              scope = "cursor",
+            })
+          end,
+        },
 
         float = {
           border = "rounded",

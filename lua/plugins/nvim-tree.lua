@@ -38,7 +38,7 @@ return {
           update_root = true,
         })
       end, {
-        buf = bufnr,
+        buffer = bufnr,
         desc = "nvim-tree: Find current file",
         silent = true,
         nowait = true,

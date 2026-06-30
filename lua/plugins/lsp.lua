@@ -146,7 +146,7 @@ return {
 
           local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, {
-              buf = args.buf,
+              buffer = args.buf,
               desc = desc,
             })
           end

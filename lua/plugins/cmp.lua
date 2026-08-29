@@ -6,15 +6,12 @@ return {
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
     "f3fora/cmp-spell",
-    "L3MON4D3/LuaSnip",
-    "saadparwaiz1/cmp_luasnip",
     "windwp/nvim-autopairs",
   },
 
   opts = function()
     local cmp = require("cmp")
     local context = require("cmp.config.context")
-    local luasnip = require("luasnip")
     local react = require("config.ft.react")
 
     local prose_filetypes = {
@@ -75,7 +72,7 @@ return {
     return {
       snippet = {
         expand = function(args)
-          luasnip.lsp_expand(args.body)
+          vim.snippet.expand(args.body)
         end,
       },
 
@@ -86,7 +83,6 @@ return {
 
       sources = cmp.config.sources({
         { name = "nvim_lsp" },
-        { name = "luasnip" },
         { name = "path" },
         {
           name = "spell",

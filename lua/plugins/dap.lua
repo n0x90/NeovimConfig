@@ -15,13 +15,15 @@ return {
   {
     "jay-babu/mason-nvim-dap.nvim",
     dependencies = {
-      "williamboman/mason.nvim",
+      "mason-org/mason.nvim",
       "mfussenegger/nvim-dap",
     },
-    opts = {
-      ensure_installed = { "python" },
-      automatic_installation = true,
-    },
+    opts = function()
+      return {
+        ensure_installed = #vim.api.nvim_list_uis() > 0 and { "python" } or {},
+        automatic_installation = false,
+      }
+    end,
   },
 
   {
@@ -62,7 +64,7 @@ return {
       "mfussenegger/nvim-dap",
     },
     config = function()
-      require("dap-python").setup("python3")
+      require("dap-python").setup("debugpy-adapter")
     end,
   },
 }

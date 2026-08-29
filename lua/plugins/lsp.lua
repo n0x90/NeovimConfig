@@ -5,18 +5,8 @@ local function ensure_mason_tools()
 
   local registry = require("mason-registry")
   local packages = {
-    "clangd",
-    "css-lsp",
-    "emmet-language-server",
-    "eslint-lsp",
-    "html-lsp",
     "prettier",
     "prettierd",
-    "basedpyright",
-    "ruff",
-    "rust-analyzer",
-    "tailwindcss-language-server",
-    "vtsls",
   }
 
   local function install_missing()
@@ -30,6 +20,19 @@ local function ensure_mason_tools()
 
   registry.refresh(vim.schedule_wrap(install_missing))
 end
+
+local lsp_servers = {
+  "basedpyright",
+  "ruff",
+  "rust_analyzer",
+  "clangd",
+  "html",
+  "cssls",
+  "tailwindcss",
+  "eslint",
+  "emmet_language_server",
+  "vtsls",
+}
 
 local function ts_client(bufnr)
   return vim.lsp.get_clients({ bufnr = bufnr, name = "vtsls" })[1]
@@ -93,7 +96,7 @@ end
 
 return {
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     build = ":MasonUpdate",
     opts = {},
     config = function(_, opts)
@@ -103,30 +106,16 @@ return {
   },
 
   {
-    "williamboman/mason-lspconfig.nvim",
+    "mason-org/mason-lspconfig.nvim",
     dependencies = {
-      "williamboman/mason.nvim",
+      "mason-org/mason.nvim",
     },
-    opts = {
-      ensure_installed = {
-        "basedpyright",
-        "ruff",
-        "rust_analyzer",
-        "clangd",
-        "html",
-        "cssls",
-        "tailwindcss",
-        "eslint",
-        "emmet_language_server",
-        "vtsls",
-      },
-      automatic_enable = {
-        exclude = {
-          "pyright",
-          "ts_ls",
-        },
-      },
-    },
+    opts = function()
+      return {
+        ensure_installed = #vim.api.nvim_list_uis() > 0 and lsp_servers or {},
+        automatic_enable = lsp_servers,
+      }
+    end,
   },
 
   {
@@ -134,7 +123,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
-      "williamboman/mason-lspconfig.nvim",
+      "mason-org/mason-lspconfig.nvim",
     },
     init = function()
       local group = vim.api.nvim_create_augroup("user_lsp_attach", { clear = true })
@@ -196,20 +185,6 @@ return {
         dynamicRegistration = false,
         lineFoldingOnly = true,
       }
-
-      local enabled_servers = {}
-
-      local function has_executable_cmd(config)
-        if type(config.cmd) == "function" then
-          return true
-        end
-
-        if type(config.cmd) == "table" and config.cmd[1] then
-          return vim.fn.executable(config.cmd[1]) == 1
-        end
-
-        return false
-      end
 
       local servers = {
         basedpyright = {
@@ -368,15 +343,8 @@ return {
         server.capabilities = capabilities
 
         vim.lsp.config(name, server)
-
-        if has_executable_cmd(vim.lsp.config[name]) then
-          table.insert(enabled_servers, name)
-        end
       end
 
-      table.sort(enabled_servers)
-
-      vim.lsp.enable(enabled_servers)
     end,
   },
 }

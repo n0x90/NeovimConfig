@@ -1,10 +1,6 @@
 return {
   "folke/todo-comments.nvim",
   event = { "BufReadPost", "BufNewFile" },
-  cmd = { "TodoTelescope", "TodoTrouble", "TodoQuickFix", "TodoLocList" },
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-  },
   keys = {
     {
       "]t",
@@ -22,12 +18,18 @@ return {
     },
     {
       "<leader>ft",
-      "<cmd>TodoTelescope<cr>",
+      function()
+        require("todo-comments.snacks").pick()
+      end,
       desc = "Todo comments",
     },
     {
       "<leader>fT",
-      "<cmd>TodoTelescope keywords=TODO,FIX,HACK,WARN,NOTE,PERF,TEST<cr>",
+      function()
+        require("todo-comments.snacks").pick({
+          keywords = { "TODO", "FIX", "HACK", "WARN", "NOTE", "PERF", "TEST" },
+        })
+      end,
       desc = "Todo comments (all)",
     },
   },

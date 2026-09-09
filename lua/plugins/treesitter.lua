@@ -11,6 +11,9 @@ return {
       "javascript",
       "json",
       "lua",
+      -- LSP hover documentation uses Markdown, including in Python buffers.
+      "markdown",
+      "markdown_inline",
       "python",
       "query",
       "regex",
@@ -86,6 +89,9 @@ return {
             vim.log.levels.ERROR
           )
         end
+
+        -- First installation may create a parser directory absent from the runtime cache.
+        vim.opt.runtimepath:prepend(install_dir)
 
         -- FileType may have fired before a requested parser was available.
         for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do

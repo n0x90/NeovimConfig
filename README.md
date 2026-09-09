@@ -15,6 +15,10 @@ Personal Neovim configuration for Linux, targeting Neovim 0.12.5.
 
 Mason installs the configured language servers, `prettier`, `prettierd`, and the
 Python debug adapter. Tree-sitter installs the configured parsers on first use.
+This includes `markdown` and `markdown_inline`, which Neovim uses to render LSP
+hover documentation (`K`) even when editing another language. After the first
+launch or pulling parser-list changes, let parser installation finish before
+opening hover documentation; check `:TSLog` if installation fails.
 
 ## Installation
 

@@ -19,16 +19,14 @@ return {
     {
       "<leader>ft",
       function()
-        require("todo-comments.snacks").pick()
+        Snacks.picker.todo_comments()
       end,
       desc = "Todo comments",
     },
     {
       "<leader>fT",
       function()
-        require("todo-comments.snacks").pick({
-          keywords = { "TODO", "FIX", "HACK", "WARN", "NOTE", "PERF", "TEST" },
-        })
+        Snacks.picker.todo_comments()
       end,
       desc = "Todo comments (all)",
     },

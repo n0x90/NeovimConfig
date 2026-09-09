@@ -8,9 +8,10 @@ Personal Neovim configuration for Linux, targeting Neovim 0.12.5.
 - Git, curl, GNU tar, gzip, and unzip
 - A C compiler and `tree-sitter-cli` 0.26.1 or newer
 - ripgrep and fd 8.4 or newer for project-wide picker and TODO searches
+- `xsel` and a working `DISPLAY` for the X11 clipboard (including the companion tmux bindings)
 - Node.js/npm, Python, and the Rust toolchain for the configured language servers, formatters, and debugger
 - `rustfmt` for Rust formatting
-- A Nerd Font 3.3 or newer for icons
+- A Nerd Font 3.3 or newer installed and selected in the Linux terminal for icons
 
 Mason installs the configured language servers, `prettier`, `prettierd`, and the
 Python debug adapter. Tree-sitter installs the configured parsers on first use.

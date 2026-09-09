@@ -6,26 +6,15 @@ local function smart_bufdelete(bufnr)
     return
   end
 
-  local replacement
-  for _, info in ipairs(vim.fn.getbufinfo({ buflisted = 1 })) do
-    if info.bufnr ~= bufnr then
-      replacement = info.bufnr
-      break
+  local job = vim.b[bufnr].terminal_job_id
+  if vim.bo[bufnr].buftype == "terminal" and job and vim.fn.jobwait({ job }, 0)[1] == -1 then
+    local choice = vim.fn.confirm("Close the running terminal?", "&Close\n&Cancel", 2)
+    if choice ~= 1 then
+      return
     end
   end
 
-  if not replacement then
-    vim.cmd("enew")
-    replacement = vim.api.nvim_get_current_buf()
-  end
-
-  for _, win in ipairs(vim.fn.win_findbuf(bufnr)) do
-    if vim.api.nvim_win_is_valid(win) then
-      vim.api.nvim_win_set_buf(win, replacement)
-    end
-  end
-
-  vim.cmd("confirm bdelete " .. bufnr)
+  require("snacks").bufdelete(bufnr)
 end
 
 local function toggle_buffer_autoformat()
@@ -107,11 +96,14 @@ map("t", "<C-h>", [[<C-\><C-n><C-w>h]])
 map("t", "<C-k>", [[<C-\><C-n><C-w>k]])
 map("t", "<C-l>", [[<C-\><C-n><C-w>l]])
 
-map({"t", "n"}, "<C-x>", function()
-  if vim.bo.buftype == "terminal" then
-    vim.cmd("hide")
-  end
-end, { desc = "Hide terminal" })
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = vim.api.nvim_create_augroup("user_terminal_keymaps", { clear = true }),
+  callback = function(args)
+    map({ "t", "n" }, "<C-x>", function()
+      vim.cmd("hide")
+    end, { buffer = args.buf, desc = "Hide terminal" })
+  end,
+})
 
 map("n", "<leader>bd", function()
   smart_bufdelete(0)

@@ -56,7 +56,7 @@ local function ts_organize_imports(bufnr)
   end
 
   client:request("workspace/executeCommand", {
-    command = "_typescript.organizeImports",
+    command = "typescript.organizeImports",
     arguments = { vim.api.nvim_buf_get_name(bufnr) },
   }, function(err)
     if err then
@@ -76,7 +76,7 @@ local function ts_go_to_source_definition(bufnr)
   local params = vim.lsp.util.make_position_params(win, client.offset_encoding)
 
   client:exec_cmd({
-    command = "_typescript.goToSourceDefinition",
+    command = "typescript.goToSourceDefinition",
     title = "Go to source definition",
     arguments = { params.textDocument.uri, params.position },
   }, { bufnr = bufnr }, function(err, result)
@@ -109,6 +109,7 @@ return {
     "mason-org/mason-lspconfig.nvim",
     dependencies = {
       "mason-org/mason.nvim",
+      "neovim/nvim-lspconfig",
     },
     opts = function()
       return {
@@ -123,7 +124,6 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
-      "mason-org/mason-lspconfig.nvim",
     },
     init = function()
       local group = vim.api.nvim_create_augroup("user_lsp_attach", { clear = true })
@@ -167,7 +167,7 @@ return {
             end, "Organize imports")
 
             map("<leader>cu", function()
-              ts_source_action("source.removeUnusedImports.ts")
+              ts_source_action("source.removeUnusedImports")
             end, "Remove unused imports")
 
             map("<leader>cM", function()
@@ -201,25 +201,21 @@ return {
                   variableTypes = true,
                 },
 
-                reportAny = false,
-                reportUnknownArgumentType = false,
-                reportUnknownLambdaType = false,
-                reportUnknownMemberType = false,
-                reportUnknownParameterType = false,
-                reportUnknownVariableType = false,
-                reportMissingTypeStubs = false,
+                diagnosticSeverityOverrides = {
+                  reportAny = false,
+                  reportUnknownArgumentType = false,
+                  reportUnknownLambdaType = false,
+                  reportUnknownMemberType = false,
+                  reportUnknownParameterType = false,
+                  reportUnknownVariableType = false,
+                  reportMissingTypeStubs = false,
+                },
               },
             },
           },
         },
 
-        ruff = {
-          init_options = {
-            settings = {
-              args = {},
-            },
-          },
-        },
+        ruff = {},
 
         rust_analyzer = {
           settings = {

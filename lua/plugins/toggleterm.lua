@@ -7,6 +7,7 @@ return {
     { "<leader>tb", desc = "Terminal (bottom)" },
   },
   opts = {
+    size = 15,
     start_in_insert = true,
     close_on_exit = true,
     shade_terminals = true,
@@ -81,7 +82,6 @@ return {
         dir = dir,
         env = terminal_env(venv),
         hidden = true,
-        size = direction == "horizontal" and 15 or nil,
       })
 
       return terminals[key]

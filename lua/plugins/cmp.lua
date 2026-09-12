@@ -69,6 +69,14 @@ return {
       end
     end
 
+    local mappings = {
+      ["<C-Space>"] = cmp.mapping.complete(),
+      ["<CR>"] = cmp.mapping(cr, { "i", "s" }),
+    }
+    if vim.fn.has("macunix") == 1 then
+      mappings["<C-g>"] = cmp.mapping.complete() -- macOS may capture Ctrl-Space.
+    end
+
     return {
       snippet = {
         expand = function(args)
@@ -76,10 +84,7 @@ return {
         end,
       },
 
-      mapping = cmp.mapping.preset.insert({
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<CR>"] = cmp.mapping(cr, { "i", "s" }),
-      }),
+      mapping = cmp.mapping.preset.insert(mappings),
 
       sources = cmp.config.sources({
         { name = "nvim_lsp" },

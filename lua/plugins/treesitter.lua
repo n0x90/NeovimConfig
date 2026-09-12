@@ -1,5 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "main",
   lazy = false,
   build = ":TSUpdate",
   opts = {
@@ -41,6 +42,7 @@ return {
     end
 
     local installing = false
+    local has_cli = vim.fn.executable("tree-sitter") == 1
     local reported_errors = {}
 
     local function attach(bufnr)
@@ -57,7 +59,7 @@ return {
       local ok, err = pcall(vim.treesitter.start, bufnr, parser)
       if not ok then
         -- Missing parsers are expected until the asynchronous install finishes.
-        if not installing and not reported_errors[parser] then
+        if has_cli and not installing and not reported_errors[parser] then
           reported_errors[parser] = true
           vim.notify(("Tree-sitter (%s): %s"):format(parser, err), vim.log.levels.ERROR)
         end
@@ -79,6 +81,14 @@ return {
     })
 
     if #vim.api.nvim_list_uis() > 0 then
+      if not has_cli then
+        vim.notify(
+          "Tree-sitter CLI is missing. On macOS run: brew install tree-sitter-cli. "
+            .. "See README.md for requirements, then restart Neovim.",
+          vim.log.levels.WARN
+        )
+        return
+      end
       installing = true
       treesitter.install(opts.parsers):await(vim.schedule_wrap(function(err, success)
         installing = false
